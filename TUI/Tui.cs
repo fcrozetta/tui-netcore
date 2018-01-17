@@ -34,6 +34,17 @@ namespace tui_netcore.TUI
 
         }
 
+
+        /// <summary>
+        /// This is the object used for each option in the checkbox and/or radio options
+        /// </summary>
+        public struct CheckRadioOption
+        {
+            bool isSelected;
+            string name;
+            string description;
+        }
+
         public Tui (int width = 100, int height = 80,int posLeft=0,int posTop=0)
         {
             Width = width;
@@ -55,6 +66,10 @@ namespace tui_netcore.TUI
             MarginTop = 2;
         }
 
+        /// <summary>
+        /// Defines a Color schema to the box
+        /// </summary>
+        /// <param name="color"></param>
         private void setColorSchema(ColorSchema color)
         {
             switch (color)
@@ -117,6 +132,8 @@ namespace tui_netcore.TUI
             else
             {
                 //* TODO: Improve the way the split is done to stay inside the box
+                //! TODO: "\n" Breaks the layout. Find a way to make this work correctly
+                
                 int tmpLine = 0;
                 StringBuilder tmpText = new StringBuilder(usableSpace, usableSpace);
                 string[] tmpBody = Body.Split(" ");
@@ -186,41 +203,66 @@ namespace tui_netcore.TUI
             return answer;
         }
 
+        /// <summary>
+        /// Draws a box with two options to answer (Yes/No)
+        /// Left/Right arrows to move between options
+        /// Enter to select option
+        /// </summary>
+        /// <param name="schema">Color Schema</param>
+        /// <param name="txtYes">Text to Yes option</param>
+        /// <param name="txtNo">Text to No option</param>
+        /// <param name="defaultAnswer">true=yes/false=no</param>
+        /// <returns>true=yes/false=no</returns>
         public bool DrawYesNo(ColorSchema schema = ColorSchema.Regular,string txtYes = "Yes", string txtNo = "No", bool defaultAnswer = false){
             Draw(schema);
             setColorSchema(schema);
             bool answer = defaultAnswer;
-            Console.SetCursorPosition((PosLeft + MarginLeft+1), (PosTop + Height - MarginTop));
-            Console.Write(txtYes);
-            Console.SetCursorPosition((PosLeft + Width - MarginLeft ), (PosTop + Height - MarginTop));
-            Console.Write(txtNo);
-            ConsoleKey keypress = Console.ReadKey().Key;
             int CursorYes = PosLeft + MarginLeft;
-            int CursorNo = PosLeft + Width - MarginLeft;
-            while (keypress != ConsoleKey.Enter)
+            int CursorNo = PosLeft + Width - (2*MarginLeft) ;
+            int Line = (PosTop + Height - MarginTop);
+
+            ConsoleKeyInfo keypress;
+            do
             {
-                if (answer)
-                {
-                    Console.SetCursorPosition(CursorNo, (PosTop + Height - MarginTop));
-                    Console.Write(EmptyChar);
-                    Console.SetCursorPosition(CursorYes, (PosTop + Height - MarginTop) );
-                    answer = true;
-                }else
-                {
-                    Console.SetCursorPosition(CursorYes, (PosTop + Height - MarginTop) );
-                    Console.Write(EmptyChar);
-                    Console.SetCursorPosition(CursorNo, (PosTop + Height - MarginTop));
-                    answer = false;
-                }
-                Console.Write(AnswerChar);
-                if ((keypress == ConsoleKey.LeftArrow) || (keypress == ConsoleKey.RightArrow))
+                Console.SetCursorPosition(CursorYes + 1, Line);
+                Console.Write(txtYes);
+                Console.SetCursorPosition(CursorNo + 1, Line);
+                Console.Write(txtNo);
+
+                Console.SetCursorPosition(CursorYes, Line);
+                Console.Write(answer?AnswerChar:EmptyChar);
+                Console.SetCursorPosition(CursorNo, Line);
+                Console.Write(!answer ? AnswerChar : EmptyChar);
+                keypress = Console.ReadKey(false);
+
+                if ((keypress.Key == ConsoleKey.LeftArrow) || (keypress.Key == ConsoleKey.RightArrow))
                 {
                     answer = !answer;
                 }
-            }
+                
+            } while (keypress.Key != ConsoleKey.Enter);
             setColorSchema(ColorSchema.Regular);
             return answer;
 
+        }
+
+        /// <summary>
+        /// This method draws the box, and wait the user press any key to continue
+        /// </summary>
+        /// <param name="schema">Color schema</param>
+        /// <param name="txtOk">Text to appear on the bottom of the box</param>
+        public void DrawOk(ColorSchema schema = ColorSchema.Regular,string txtOk = "Press any key to continue..."){
+            Draw(schema);
+            setColorSchema(schema);
+            int CursorOk = PosLeft + MarginLeft;
+            int Line = (PosTop + Height - MarginTop);
+            Console.SetCursorPosition(CursorOk, Line);
+            Console.Write($"{AnswerChar}{txtOk}");
+            Console.ReadKey();
+        }
+
+        public List<string> DrawCheckBox(List<CheckRadioOption> options, ColorSchema schema = ColorSchema.Regular){
+            //Continue Here
         }
 
 
