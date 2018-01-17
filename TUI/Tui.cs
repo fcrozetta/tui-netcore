@@ -263,6 +263,7 @@ namespace tui_netcore.TUI
 
         public List<string> DrawCheckBox(List<CheckRadioOption> options, ColorSchema schema = ColorSchema.Regular){
             //Continue Here
+            return new List<string>();
         }
 
 
