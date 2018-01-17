@@ -40,9 +40,9 @@ namespace tui_netcore.TUI
         /// </summary>
         public struct CheckRadioOption
         {
-            bool isSelected;
-            string name;
-            string description;
+            public bool IsSelected { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
         }
 
         public Tui (int width = 100, int height = 80,int posLeft=0,int posTop=0)
@@ -263,6 +263,10 @@ namespace tui_netcore.TUI
 
         public List<string> DrawCheckBox(List<CheckRadioOption> options, ColorSchema schema = ColorSchema.Regular){
             //Continue Here
+            foreach (CheckRadioOption o in options)
+            {
+                System.Console.WriteLine(o.Name);
+            }
             return new List<string>();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using tui_netcore.TUI;
+using System.Collections.Generic;
 namespace tui_netcore
 {
     class Program
@@ -21,8 +22,28 @@ namespace tui_netcore
             string charName = t.DrawInput(schema);
 
             t.Body = "Type your race";
-            string charRace = t.DrawInput(schema);
+             string charRace = t.DrawInput(schema);
             // Console.ReadLine();
+
+            t.Body = "Choose a few options";
+
+            List<string> options = t.DrawCheckBox(new List<Tui.CheckRadioOption>(){
+                new Tui.CheckRadioOption(){
+                    IsSelected = false,
+                    Name = "option 1",
+                    Description = "Description of option 1"
+                },
+                new Tui.CheckRadioOption(){
+                    IsSelected = true,
+                    Name = "option 2",
+                    Description = "Description of option 2"
+                },
+                new Tui.CheckRadioOption(){
+                    IsSelected = false,
+                    Name = "option 3",
+                    Description = "Description of option 3"
+                }
+            },schema);
 
             t.Title = "Confirmation Screen";
             t.Body = $"Are you sure that you are {charName}, the {charRace}?";
