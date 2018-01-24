@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace tui_netcore.TUI
 {
@@ -270,25 +271,63 @@ namespace tui_netcore.TUI
 
         public List<string> DrawCheckBox(List<CheckRadioOption> options, ColorSchema schema = ColorSchema.Regular){
             Draw(schema);
-        setColorSchema(schema);
+            setColorSchema(schema);
             int Line = LastBodyHeight + MarginTop;
+            int tmpCursor = 0;
+            List<CheckRadioOption> TmpOptions = options;
             //Continue Here
-            foreach (CheckRadioOption o in options)
+            foreach (CheckRadioOption o in TmpOptions)
             {
                 char tmpSelected = o.IsSelected ? SelectedChar : EmptyChar;
                 Console.SetCursorPosition(MarginLeft, Line);
-                System.Console.Write($" [{tmpSelected}] {o.Name} {o.Description}");
+                System.Console.Write($" [{tmpSelected}] {o.Name} - {o.Description}");
                 Line++;
             }
+
             Line -= options.Count;
-            Console.SetCursorPosition(MarginLeft, Line);
-            Console.Write(AnswerChar);
+            // Console.SetCursorPosition(MarginLeft, Line);
+            // Console.Write(AnswerChar);
 
-            
+            ConsoleKeyInfo keypress;
+            do
+            {
+                
+                Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                Console.Write(AnswerChar);
+                keypress = Console.ReadKey(true);
+                if (keypress.Key == ConsoleKey.UpArrow)
+                {
+                    if (tmpCursor > 0)
+                    {
+                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.Write(EmptyChar);
+                        tmpCursor--;
+                    }
+                }
+                if (keypress.Key == ConsoleKey.DownArrow)
+                {
+                    if (tmpCursor < TmpOptions.Count-1)
+                    {
+                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.Write(EmptyChar);
+                        tmpCursor++;
+                    }
+                }
+                if (keypress.Key == ConsoleKey.Spacebar)
+                {
+                    CheckRadioOption c = TmpOptions[tmpCursor];
+                    c.IsSelected = !c.IsSelected;
+                    char ch = c.IsSelected?SelectedChar:EmptyChar;
+                    Console.SetCursorPosition(MarginLeft + 2, Line + tmpCursor);
+                    TmpOptions[tmpCursor] = c;
+                    Console.Write(ch);
 
+                }
 
+            } while (keypress.Key != ConsoleKey.Enter);
+            IEnumerable<string> retorno = from o in options where o.IsSelected == true select o.Name;
             setColorSchema(ColorSchema.Regular);
-            return new List<string>();
+            return retorno.ToList();
 
         }
 

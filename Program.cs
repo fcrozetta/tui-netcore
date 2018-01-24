@@ -15,15 +15,14 @@ namespace tui_netcore
                 Body = "Welcome To the first Version of the TUI, made by Fernando Crozetta."
             };
             Tui.ColorSchema schema =Tui.ColorSchema.Info;
-            t.DrawOk(schema);
+            // t.DrawOk(schema);
             
             t.Title = "Creating a Simple character";
             t.Body = "Please Type the name of your character";
-            string charName = t.DrawInput(schema);
+            // string charName = t.DrawInput(schema);
 
             t.Body = "Type your race";
-             string charRace = t.DrawInput(schema);
-            // Console.ReadLine();
+            // string charRace = t.DrawInput(schema);
 
             t.Body = "Choose a few options";
 
@@ -44,9 +43,13 @@ namespace tui_netcore
                     Description = "Description of option 3"
                 }
             },schema);
+            foreach (string s in options)
+            {
+                Console.WriteLine(s);
+            }
 
             t.Title = "Confirmation Screen";
-            t.Body = $"Are you sure that you are {charName}, the {charRace}?";
+            // t.Body = $"Are you sure that you are {charName}, the {charRace}?";
 
             if(t.DrawYesNo(Tui.ColorSchema.Warning)){
                 t.Title = " The End ";
