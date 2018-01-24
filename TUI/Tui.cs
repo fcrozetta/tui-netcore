@@ -6,13 +6,23 @@ namespace tui_netcore.TUI
 {
     public class Tui
     {
+        // Box Width
         public int Width { get; set; }
+        // Box Height
         public int Height { get; set; }
+
+        // Position (left) of the first character of the box inside the terminal
         public int PosLeft { get; set; }
+        // Position (top) of the first character of the box inside the terminal
         public int PosTop { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+
+        //Character Used to navigate, answer strings and select an option 
         public char AnswerChar { get; set; }
+        public char SelectedChar { get; set; }
+
+
         public char HorizontalChar { get; set; }
         public char VerticalChar { get; set; }
         public char TopLeftChar { get; set; }
@@ -23,6 +33,9 @@ namespace tui_netcore.TUI
         public char EmptyChar { get; set; }
         public int MarginLeft { get; set; }
         public int MarginTop { get; set; }
+
+        // * This is used to draw multiple lines below the body (checkbox/radio)
+        public int LastBodyHeight { get; set; }
 
         public enum ColorSchema
         {
@@ -52,6 +65,7 @@ namespace tui_netcore.TUI
             PosTop = 0;
             PosLeft = 0;
             AnswerChar= '>';
+            SelectedChar = '*';
             HorizontalChar = '-';
             VerticalChar = '|';
             TopLeftChar = '+';
@@ -64,6 +78,7 @@ namespace tui_netcore.TUI
             Body = null;
             MarginLeft = 4;
             MarginTop = 2;
+            LastBodyHeight = 0;
         }
 
         /// <summary>
@@ -124,38 +139,30 @@ namespace tui_netcore.TUI
         private void drawBody()
         {
             int usableSpace = Width - (2 * MarginLeft);
-            if (Body.Length <= usableSpace)
+            //* TODO: Improve the way the split is done to stay inside the box
+            //! TODO: "\n" Breaks the layout. Find a way to make this work correctly
+            
+            int tmpLine = 0;
+            StringBuilder tmpText = new StringBuilder(usableSpace, usableSpace);
+            string[] tmpBody = Body.Split(" ");
+            foreach (string s in tmpBody)
             {
-                Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + MarginTop));
-                System.Console.Write(Body);
-            }
-            else
-            {
-                //* TODO: Improve the way the split is done to stay inside the box
-                //! TODO: "\n" Breaks the layout. Find a way to make this work correctly
-                
-                int tmpLine = 0;
-                StringBuilder tmpText = new StringBuilder(usableSpace, usableSpace);
-                string[] tmpBody = Body.Split(" ");
-                foreach (string s in tmpBody)
+                try
                 {
-                    try
-                    {
-                        tmpText.Append(s);
-                        tmpText.Append(" ");
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + MarginTop + tmpLine));
-                        System.Console.Write(tmpText);
-                        tmpLine++;
-                        tmpText.Clear();
-                    }
+                    tmpText.Append(s);
+                    tmpText.Append(" ");
                 }
-                Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + MarginTop + tmpLine));
-                System.Console.Write(tmpText);
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + MarginTop + tmpLine));
+                    System.Console.Write(tmpText);
+                    tmpLine++;
+                    tmpText.Clear();
+                }
             }
-
+            Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + MarginTop + tmpLine));
+            LastBodyHeight = PosTop + MarginTop + tmpLine;
+            System.Console.Write(tmpText);
         }
 
         /// <summary>
@@ -262,12 +269,27 @@ namespace tui_netcore.TUI
         }
 
         public List<string> DrawCheckBox(List<CheckRadioOption> options, ColorSchema schema = ColorSchema.Regular){
+            Draw(schema);
+        setColorSchema(schema);
+            int Line = LastBodyHeight + MarginTop;
             //Continue Here
             foreach (CheckRadioOption o in options)
             {
-                System.Console.WriteLine(o.Name);
+                char tmpSelected = o.IsSelected ? SelectedChar : EmptyChar;
+                Console.SetCursorPosition(MarginLeft, Line);
+                System.Console.Write($" [{tmpSelected}] {o.Name} {o.Description}");
+                Line++;
             }
+            Line -= options.Count;
+            Console.SetCursorPosition(MarginLeft, Line);
+            Console.Write(AnswerChar);
+
+            
+
+
+            setColorSchema(ColorSchema.Regular);
             return new List<string>();
+
         }
 
 
