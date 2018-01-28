@@ -52,7 +52,7 @@ namespace tui_netcore.TUI
         /// <summary>
         /// This is the object used for each option in the checkbox and/or radio options
         /// </summary>
-        public struct CheckRadioOption
+        public struct CheckBoxOption
         {
             public bool IsSelected { get; set; }
             public string Name { get; set; }
@@ -63,8 +63,8 @@ namespace tui_netcore.TUI
         {
             Width = width;
             Height = height;
-            PosTop = 0;
-            PosLeft = 0;
+            PosTop = posLeft;
+            PosLeft = posTop;
             AnswerChar= '>';
             SelectedChar = '*';
             HorizontalChar = '-';
@@ -150,6 +150,10 @@ namespace tui_netcore.TUI
             {
                 try
                 {
+                    if (s == "\n")
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
                     tmpText.Append(s);
                     tmpText.Append(" ");
                 }
@@ -170,7 +174,7 @@ namespace tui_netcore.TUI
         /// This Frame wraps the entire screen, printing spaces inside.
         /// </summary>
         /// <param name="schema">Color Scheme to be used</param>
-        public void Draw(ColorSchema schema = ColorSchema.Regular){
+        private void Draw(ColorSchema schema = ColorSchema.Regular){
             setColorSchema(schema);
             for (int i = PosTop; i < Height; i++)
             {
@@ -269,14 +273,14 @@ namespace tui_netcore.TUI
             Console.ReadKey();
         }
 
-        public List<string> DrawCheckBox(List<CheckRadioOption> options, ColorSchema schema = ColorSchema.Regular){
+        public List<CheckBoxOption> DrawCheckBox(List<CheckBoxOption> options, ColorSchema schema = ColorSchema.Regular, bool onlyChecked = true){
             Draw(schema);
             setColorSchema(schema);
             int Line = LastBodyHeight + MarginTop;
             int tmpCursor = 0;
-            List<CheckRadioOption> TmpOptions = options;
+            List<CheckBoxOption> TmpOptions = options;
             //Continue Here
-            foreach (CheckRadioOption o in TmpOptions)
+            foreach (CheckBoxOption o in TmpOptions)
             {
                 char tmpSelected = o.IsSelected ? SelectedChar : EmptyChar;
                 Console.SetCursorPosition(MarginLeft, Line);
@@ -285,8 +289,6 @@ namespace tui_netcore.TUI
             }
 
             Line -= options.Count;
-            // Console.SetCursorPosition(MarginLeft, Line);
-            // Console.Write(AnswerChar);
 
             ConsoleKeyInfo keypress;
             do
@@ -315,7 +317,7 @@ namespace tui_netcore.TUI
                 }
                 if (keypress.Key == ConsoleKey.Spacebar)
                 {
-                    CheckRadioOption c = TmpOptions[tmpCursor];
+                    CheckBoxOption c = TmpOptions[tmpCursor];
                     c.IsSelected = !c.IsSelected;
                     char ch = c.IsSelected?SelectedChar:EmptyChar;
                     Console.SetCursorPosition(MarginLeft + 2, Line + tmpCursor);
@@ -325,9 +327,61 @@ namespace tui_netcore.TUI
                 }
 
             } while (keypress.Key != ConsoleKey.Enter);
-            IEnumerable<string> retorno = from o in options where o.IsSelected == true select o.Name;
+
+            if (onlyChecked)
+            {
+                TmpOptions = (from t in TmpOptions where t.IsSelected select t).ToList();
+            }
+
             setColorSchema(ColorSchema.Regular);
-            return retorno.ToList();
+            return TmpOptions;
+
+        }
+
+        public string DrawList(List<String> options, ColorSchema schema = ColorSchema.Regular)
+        {
+            Draw(schema);
+            setColorSchema(schema);
+            int Line = LastBodyHeight + MarginTop;
+            int tmpCursor = 0;
+            foreach (string s in options)
+            {
+                Console.SetCursorPosition(MarginLeft, Line);
+                System.Console.Write($" {s}");
+                Line++;
+            }
+
+            Line -= options.Count;
+
+            ConsoleKeyInfo keypress;
+            do
+            {
+
+                Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                Console.Write(AnswerChar);
+                keypress = Console.ReadKey(true);
+                if (keypress.Key == ConsoleKey.UpArrow)
+                {
+                    if (tmpCursor > 0)
+                    {
+                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.Write(EmptyChar);
+                        tmpCursor--;
+                    }
+                }
+                if (keypress.Key == ConsoleKey.DownArrow)
+                {
+                    if (tmpCursor < options.Count - 1)
+                    {
+                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.Write(EmptyChar);
+                        tmpCursor++;
+                    }
+                }
+
+            } while (keypress.Key != ConsoleKey.Enter);
+            setColorSchema(ColorSchema.Regular);
+            return options[tmpCursor];
 
         }
 
