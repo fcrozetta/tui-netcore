@@ -170,6 +170,22 @@ namespace tui_netcore.TUI
             System.Console.Write(tmpText);
         }
 
+        private void DrawCorners()
+        {
+            Console.SetCursorPosition(PosLeft,PosTop);
+            Console.Write(TopLeftChar);
+
+            Console.SetCursorPosition(PosLeft + Width -1, PosTop);
+            System.Console.Write(TopRightChar);
+
+            Console.SetCursorPosition(PosLeft, PosTop + Height -1);
+            System.Console.Write(BottomLeftChar);
+
+            Console.SetCursorPosition(PosLeft + Width -1 , PosTop + Height -1);
+            System.Console.Write(BottomRightChar);
+        }
+
+
         /// <summary>
         /// This Frame wraps the entire screen, printing spaces inside.
         /// </summary>
@@ -195,8 +211,10 @@ namespace tui_netcore.TUI
                     Console.Write(ToPrint);
                 }
             }
+            DrawCorners();
             if (Title != null) drawTitle();
             if (Body != null) drawBody();
+
             setColorSchema(ColorSchema.Regular);
         }
 
