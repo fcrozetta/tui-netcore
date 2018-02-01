@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace tui_netcore.TUI
+namespace tui_netcore
 {
     public class Tui
     {
@@ -145,7 +145,7 @@ namespace tui_netcore.TUI
             
             int tmpLine = 0;
             StringBuilder tmpText = new StringBuilder(usableSpace, usableSpace);
-            string[] tmpBody = Body.Split(" ");
+            string[] tmpBody = Body.Split(' ');
             foreach (string s in tmpBody)
             {
                 try

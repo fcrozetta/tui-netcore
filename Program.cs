@@ -1,5 +1,5 @@
 ﻿using System;
-using tui_netcore.TUI;
+using tui_netcore;
 using System.Collections.Generic;
 namespace tui_netcore
 {
