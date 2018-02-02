@@ -5,7 +5,7 @@
     <Title>Simple TUI</Title>
     <Description>Simple Text Interface for .net Core</Description>
     <PackageId>fc.tui-core</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.0.1-alpha</Version>
     <Authors>Fernando Crozetta</Authors>
     <Company>czetta</Company>
     <PackageLicenseUrl>https://github.com/fcrozetta/tui-netcore/blob/master/LICENSE</PackageLicenseUrl>
