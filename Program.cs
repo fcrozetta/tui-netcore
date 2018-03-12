@@ -74,6 +74,10 @@ namespace tui_netcore
             t.DrawOk();
 
 
+            t.Title = "End Program";
+            t.Body = "This does not require user interaction";
+            t.Draw();
+
             //! Going back to default terminal settings
             Console.ResetColor();
             Console.CursorVisible = true;

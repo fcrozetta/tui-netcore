@@ -190,7 +190,7 @@ namespace tui_netcore
         /// This Frame wraps the entire screen, printing spaces inside.
         /// </summary>
         /// <param name="schema">Color Scheme to be used</param>
-        private void Draw(ColorSchema schema = ColorSchema.Regular){
+        public void Draw(ColorSchema schema = ColorSchema.Regular){
             setColorSchema(schema);
             for (int i = PosTop; i < Height; i++)
             {
@@ -400,10 +400,7 @@ namespace tui_netcore
             } while (keypress.Key != ConsoleKey.Enter);
             setColorSchema(ColorSchema.Regular);
             return options[tmpCursor];
-
         }
-
-
 
 
     }
