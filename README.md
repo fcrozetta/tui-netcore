@@ -15,8 +15,9 @@ It's is possible to use, but bugs are still happening.
 - [Usage](#usage)
     - [Instantiating the box object](#instantiating-the-box-object)
     - [Drawing a Simple Box](#drawing-a-simple-box)
+    - [Drawing a box, without waiting response from user](#drawing-a-box--without-waiting-response-from-user)
     - [Drawing an Input Box](#drawing-an-input-box)
-    - [Drawing a Yes/No Box](#drawing-a-yesno-box)
+    - [Drawing a Yes/No Box](#drawing-a-yes-no-box)
     - [Draw a check Box](#draw-a-check-box)
     - [Draw a list box](#draw-a-list-box)
 - [Bugs](#bugs)
@@ -77,6 +78,12 @@ t.DrawOk();
 Yes. It's simple like that. 
 
 DrawOk() Method will accept any key to continue.
+
+## Drawing a box, without waiting response from user
+```csharp
+    t.Draw();
+```
+This will create a box, and continue the program. Use this as a part of something more complex.
 
 ## Drawing an Input Box
 ```csharp
