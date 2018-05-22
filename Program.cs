@@ -13,7 +13,7 @@ namespace tui_netcore
 
             //The construction of a box. Set Size and position
             // ! So far, setting box position will cause errors. This is a known issue
-            Tui t = new Tui(100,25){
+            Tui t = new Tui(100,25,10,15){
                 Title = "Tui Demo",
                 Body = "This is a demo test for Tui netcore. This is the first version, and bugs may appear" +
                 " \n Do not be afraid. \n This Contains a sequence of screens that will show you how to create and"+

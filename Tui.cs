@@ -63,8 +63,8 @@ namespace tui_netcore
         {
             Width = width;
             Height = height;
-            PosTop = posLeft;
-            PosLeft = posTop;
+            PosTop = posTop;
+            PosLeft = posLeft;
             AnswerChar= '>';
             SelectedChar = '*';
             HorizontalChar = '-';
@@ -192,16 +192,16 @@ namespace tui_netcore
         /// <param name="schema">Color Scheme to be used</param>
         public void Draw(ColorSchema schema = ColorSchema.Regular){
             setColorSchema(schema);
-            for (int i = PosTop; i < Height; i++)
+            for (int i = PosTop; i < Height+PosTop; i++)
             {
-                for (int j = PosLeft; j < Width; j++)
+                for (int j = PosLeft; j < Width+PosLeft; j++)
                 {
                     char ToPrint = ' ';
 
-                    if ((i == 0) || (i == Height-1))
+                    if ((i == 0 + PosTop) || (i == PosTop + Height-1))
                     {
                         ToPrint = HorizontalChar;
-                    }else if((j == 0) || (j==Width-1)){
+                    }else if((j == 0 + PosLeft) || (j==PosLeft + Width-1)){
                         ToPrint = VerticalChar;
                     }else
                     {
@@ -301,7 +301,7 @@ namespace tui_netcore
             foreach (CheckBoxOption o in TmpOptions)
             {
                 char tmpSelected = o.IsSelected ? SelectedChar : EmptyChar;
-                Console.SetCursorPosition(MarginLeft, Line);
+                Console.SetCursorPosition(MarginLeft + PosLeft, Line);
                 System.Console.Write($" [{tmpSelected}] {o.Name} - {o.Description}");
                 Line++;
             }
@@ -312,14 +312,14 @@ namespace tui_netcore
             do
             {
                 
-                Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                 Console.Write(AnswerChar);
                 keypress = Console.ReadKey(true);
                 if (keypress.Key == ConsoleKey.UpArrow)
                 {
                     if (tmpCursor > 0)
                     {
-                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                         Console.Write(EmptyChar);
                         tmpCursor--;
                     }
@@ -328,7 +328,7 @@ namespace tui_netcore
                 {
                     if (tmpCursor < TmpOptions.Count-1)
                     {
-                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                         Console.Write(EmptyChar);
                         tmpCursor++;
                     }
@@ -338,7 +338,7 @@ namespace tui_netcore
                     CheckBoxOption c = TmpOptions[tmpCursor];
                     c.IsSelected = !c.IsSelected;
                     char ch = c.IsSelected?SelectedChar:EmptyChar;
-                    Console.SetCursorPosition(MarginLeft + 2, Line + tmpCursor);
+                    Console.SetCursorPosition(MarginLeft + 2 + PosLeft, Line + tmpCursor);
                     TmpOptions[tmpCursor] = c;
                     Console.Write(ch);
 
@@ -364,7 +364,7 @@ namespace tui_netcore
             int tmpCursor = 0;
             foreach (string s in options)
             {
-                Console.SetCursorPosition(MarginLeft, Line);
+                Console.SetCursorPosition(MarginLeft + PosLeft, Line);
                 System.Console.Write($" {s}");
                 Line++;
             }
@@ -375,14 +375,14 @@ namespace tui_netcore
             do
             {
 
-                Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                 Console.Write(AnswerChar);
                 keypress = Console.ReadKey(true);
                 if (keypress.Key == ConsoleKey.UpArrow)
                 {
                     if (tmpCursor > 0)
                     {
-                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                         Console.Write(EmptyChar);
                         tmpCursor--;
                     }
@@ -391,7 +391,7 @@ namespace tui_netcore
                 {
                     if (tmpCursor < options.Count - 1)
                     {
-                        Console.SetCursorPosition(MarginLeft, Line + tmpCursor);
+                        Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                         Console.Write(EmptyChar);
                         tmpCursor++;
                     }
