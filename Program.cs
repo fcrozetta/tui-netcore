@@ -11,8 +11,11 @@ namespace tui_netcore
             // ? This is set outside the class for now. this may be set inside the class, in another commit
             Console.CursorVisible = false;
 
+            // The empty Constructor build a fullscreen, based on Console size at instance time
+            Tui fullscreen = new Tui();
+            fullscreen.DrawYesNo();
+
             //The construction of a box. Set Size and position
-            // ! So far, setting box position will cause errors. This is a known issue
             Tui t = new Tui(100,25,10,15){
                 Title = "Tui Demo",
                 Body = "This is a demo test for Tui netcore. This is the first version, and bugs may appear" +

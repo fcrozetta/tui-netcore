@@ -71,6 +71,20 @@ Tui t = new Tui(100,25){
 };
 ```
 
+To create a fullscreen box (a box that cover the entire console size), you can use an empty constructor, like the example below:
+
+```csharp
+using tui_netcore;
+
+/* Inside your main */
+Tui.ColorSchema schema =Tui.ColorSchema.Info; // This is used to change the color of the box
+Tui t = new Tui(){
+    Title = "fullscreen box!",
+    Body = "It's easy to create!"
+};
+```
+
+
 ## Drawing a Simple Box
 ```csharp
 t.DrawOk();
@@ -78,6 +92,8 @@ t.DrawOk();
 Yes. It's simple like that. 
 
 DrawOk() Method will accept any key to continue.
+
+
 
 ## Drawing a box, without waiting response from user
 ```csharp
