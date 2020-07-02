@@ -25,5 +25,5 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: hello world
       env:
-        SECRET: ${{secrets.secret}}
+        SECRET: ${{secrets.TEST_SECRET}}
       run: echo "$SECRET"
