@@ -1,3 +1,4 @@
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L3L01VSK2)
 # tui-netcore
 Simple Text User Interface for .net Core.
 This Class was implemented to make easy to implement a simple interface for the user.
