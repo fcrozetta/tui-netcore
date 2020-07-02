@@ -1,4 +1,6 @@
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L3L01VSK2)
+
+![.NET Core](https://github.com/fcrozetta/tui-netcore/workflows/.NET%20Core/badge.svg)
 # tui-netcore
 Simple Text User Interface for .net Core.
 This Class was implemented to make easy to implement a simple interface for the user.
