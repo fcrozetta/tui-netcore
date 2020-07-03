@@ -41,3 +41,12 @@ jobs:
         asset_path: ./tui-netcore.zip
         asset_name: tui-netcore.zip
         asset_content_type: application/zip  
+    - name: nuget upload
+      env:
+       API_KEY: ${{secrets.NUGET_API_KEY}}
+      run: dotnet nuget push  bin/Release/*.nupkg -k $API_KEY -s "https://api.nuget.org/v3/index.json"
+    - name: Symbol nuget upload
+      env:
+       API_KEY: ${{secrets.NUGET_API_KEY}}
+      run: dotnet nuget push  bin/Release/*.snupkg -k $API_KEY -s "https://api.nuget.org/v3/index.json"
+   
