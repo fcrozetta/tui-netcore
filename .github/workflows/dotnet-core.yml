@@ -18,12 +18,10 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet pack --configuration Release 
     - name: Build project # This would actually build your project, using zip for an example artifact
       run: |
-        zip --junk-paths fc.tui-netcore bin/Release/*pkg
+        zip --junk-paths fc.tui-netcore ./bin/Release/*pkg
     - name: Create a Release
       id: create_release
       uses: actions/create-release@v1
