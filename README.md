@@ -16,13 +16,14 @@ It's is possible to use, but bugs are still happening.
 - [But why?](#but-why)
 - [Instalation](#instalation)
 - [Usage](#usage)
-    - [Instantiating the box object](#instantiating-the-box-object)
-    - [Drawing a Simple Box](#drawing-a-simple-box)
-    - [Drawing a box, without waiting response from user](#drawing-a-box--without-waiting-response-from-user)
-    - [Drawing an Input Box](#drawing-an-input-box)
-    - [Drawing a Yes/No Box](#drawing-a-yes-no-box)
-    - [Draw a check Box](#draw-a-check-box)
-    - [Draw a list box](#draw-a-list-box)
+  - [Instantiating the box object](#instantiating-the-box-object)
+  - [Drawing a Simple Box](#drawing-a-simple-box)
+  - [Drawing a box, without waiting response from user](#drawing-a-box-without-waiting-response-from-user)
+  - [Drawing an Input Box](#drawing-an-input-box)
+  - [Drawing a Yes/No Box](#drawing-a-yesno-box)
+  - [Draw a check Box](#draw-a-check-box)
+  - [Draw a list box](#draw-a-list-box)
+  - [Draw a Book box](#draw-a-book-box)
 - [Bugs](#bugs)
 
 # But why?
@@ -146,6 +147,14 @@ string ListBox = t.DrawList(new List<string>() {
                 "Apple",
                 "Orange"
         });
+```
+## Draw a Book box
+This type of box will render a "book" splitting the text into pages.
+
+The page number will be at the title bar, after the title
+
+```csharp
+string ListBox = t.DrawBook();
 ```
 
 # Bugs
