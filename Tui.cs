@@ -255,6 +255,82 @@ namespace tui_netcore
             return answer;
         }
 
+
+        /// <summary>
+        /// Prints message as book pages, based on window size.
+        /// Has three button options (next, previous, done) that are used to go forward, backward and exit scree
+        /// </summary>
+        /// <param name="schema">Color Schema</param>
+        /// <param name="txtNext">Text for Next option</param>
+        /// <param name="txtPrev">Text for Previous option</param>
+        /// <param name="txtDone">Text for Quit option</param>
+        /// <param name="defaultAnswer">0=Prev / 1=Next / 2=Done</param>
+        public void DrawBook(ColorSchema schema = ColorSchema.Regular, string txtNext="next", string txtPrev="previous", string txtDone="Done", int defaultAnswer=1){
+            setColorSchema(schema);
+            int answer = defaultAnswer;
+            int CursorPrev = PosLeft + MarginLeft;
+            int CursorDone = PosLeft + Width - (2*MarginLeft) ;
+            int CursorNext = (PosLeft + Width) /2 ;
+            int Line = (PosTop + Height - MarginTop);
+            int index = 0;
+    
+            List<string> pages = new List<string>();
+            pages.Add("PAGE 1");
+            pages.Add("PAGE 2");
+            pages.Add("PAGE 3");
+
+
+            ConsoleKeyInfo keypress;
+            bool keepGoing = true;
+            while (keepGoing)
+            {
+                Draw(schema);
+                Console.SetCursorPosition(CursorPrev + 1, Line);
+                Console.Write(txtPrev);
+                Console.SetCursorPosition(CursorNext + 1, Line);
+                Console.Write(txtNext);
+                Console.SetCursorPosition(CursorDone + 1, Line);
+                Console.Write(txtDone);
+
+                Console.SetCursorPosition(CursorPrev, Line);
+                Console.Write(answer == 0?AnswerChar:EmptyChar);
+                Console.SetCursorPosition(CursorNext, Line);
+                Console.Write(answer == 1 ? AnswerChar : EmptyChar);
+                Console.SetCursorPosition(CursorDone, Line);
+                Console.Write(answer == 2 ? AnswerChar : EmptyChar);
+                
+                keypress = Console.ReadKey(false);
+                
+                switch (keypress.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        answer = answer-1 >= 0 ? answer-1 : 2;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        answer = answer + 1 <= 2 ? answer+1 : 0;
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (answer)
+                        {
+                            case 0:
+                                index = index-1 >= 0 ? index-1:pages.Count()-1;
+                                break;
+                            case 1:
+                                index = index+1 <= pages.Count()-1 ? index+1:0;
+                                break;
+                            case 2:
+                                keepGoing = false;
+                                break;
+
+                        }
+                        break;
+                }
+                Body = pages[index];
+                
+            }
+            setColorSchema(ColorSchema.Regular);
+        }
+
         /// <summary>
         /// Draws a box with two options to answer (Yes/No)
         /// Left/Right arrows to move between options

@@ -5,10 +5,10 @@
     dotnet pack -o nuget
   -->
   <!-- Uncomment these to test -->
-    <!-- <OutputType>Exe</OutputType> -->
+    <OutputType>Exe</OutputType>
   <!--  -->
 
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp2.0</TargetFrameworks>
     <Title>Simple TUI</Title>
     <Description>Simple Text Interface for .net Core</Description>
     <PackageId>fc.tui-core</PackageId>
