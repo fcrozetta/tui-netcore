@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp2.0/tui-netcore.dll",
+            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.0/tui-netcore.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "externalTerminal",

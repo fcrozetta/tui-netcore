@@ -59,13 +59,13 @@ namespace tui_netcore
             public string Description { get; set; }
         }
 
-        public Tui (int width = 100, int height = 80,int posLeft=0,int posTop=0)
+        public Tui(int width = 100, int height = 80, int posLeft = 0, int posTop = 0)
         {
             Width = width;
             Height = height;
             PosTop = posTop;
             PosLeft = posLeft;
-            AnswerChar= '>';
+            AnswerChar = '>';
             SelectedChar = '*';
             HorizontalChar = '-';
             VerticalChar = '|';
@@ -82,12 +82,13 @@ namespace tui_netcore
             LastBodyHeight = 0;
         }
 
-        public Tui(){
+        public Tui()
+        {
             Width = Console.WindowWidth;
             Height = Console.WindowHeight;
             PosTop = 0;
             PosLeft = 0;
-            AnswerChar= '>';
+            AnswerChar = '>';
             SelectedChar = '*';
             HorizontalChar = '-';
             VerticalChar = '|';
@@ -138,15 +139,16 @@ namespace tui_netcore
         /// <summary>
         /// Print the entire Screen, Use this to test your terminal
         /// </summary>
-        public void TestSize(ColorSchema schema= ColorSchema.Info){
+        public void TestSize(ColorSchema schema = ColorSchema.Info)
+        {
             for (int i = 0; i < Height; i++)
             {
                 for (int j = 0; j < Width; j++)
                 {
-                    Console.SetCursorPosition(j,i);
+                    Console.SetCursorPosition(j, i);
                     System.Console.Write("+");
                 }
-                Console.SetCursorPosition((Width/2)-6,i);
+                Console.SetCursorPosition((Width / 2) - 6, i);
                 setColorSchema(schema);
                 System.Console.Write($"Line {i}");
                 Console.ResetColor();
@@ -159,12 +161,40 @@ namespace tui_netcore
             Console.Write(Title);
         }
 
+
+        /// <summary>
+        /// Roughly break body text in pages, considering no line breaks.
+        /// If there are line breaks, the window will not be complete.
+        /// words may break abruptely
+        /// </summary>
+        /// <returns></returns>
+        private List<string> separatePages()
+        {
+            var pages = new List<string>();
+            int index = -1;
+            int totalSpace = (Width - (2 * MarginLeft)) * (Height - (2*MarginTop) -2); 
+
+            foreach (var c in Body)
+            {
+                if (index == -1){
+                    pages.Add(c.ToString());
+                    index ++;
+                }else if (pages.Last().ToString().Count()-1 < totalSpace){
+                    pages[index]+=c.ToString();
+                }else{
+                    pages.Add(c.ToString());
+                    index++;
+                }
+            }
+
+            return pages;
+        }
         private void drawBody()
         {
             int usableSpace = Width - (2 * MarginLeft);
             //* TODO: Improve the way the split is done to stay inside the box
             //! TODO: "\n" Breaks the layout. Find a way to make this work correctly
-            
+
             int tmpLine = 0;
             StringBuilder tmpText = new StringBuilder(usableSpace, usableSpace);
             string[] tmpBody = Body.Split(' ');
@@ -194,16 +224,16 @@ namespace tui_netcore
 
         private void DrawCorners()
         {
-            Console.SetCursorPosition(PosLeft,PosTop);
+            Console.SetCursorPosition(PosLeft, PosTop);
             Console.Write(TopLeftChar);
 
-            Console.SetCursorPosition(PosLeft + Width -1, PosTop);
+            Console.SetCursorPosition(PosLeft + Width - 1, PosTop);
             System.Console.Write(TopRightChar);
 
-            Console.SetCursorPosition(PosLeft, PosTop + Height -1);
+            Console.SetCursorPosition(PosLeft, PosTop + Height - 1);
             System.Console.Write(BottomLeftChar);
 
-            Console.SetCursorPosition(PosLeft + Width -1 , PosTop + Height -1);
+            Console.SetCursorPosition(PosLeft + Width - 1, PosTop + Height - 1);
             System.Console.Write(BottomRightChar);
         }
 
@@ -212,24 +242,28 @@ namespace tui_netcore
         /// This Frame wraps the entire screen, printing spaces inside.
         /// </summary>
         /// <param name="schema">Color Scheme to be used</param>
-        public void Draw(ColorSchema schema = ColorSchema.Regular){
+        public void Draw(ColorSchema schema = ColorSchema.Regular)
+        {
             setColorSchema(schema);
-            for (int i = PosTop; i < Height+PosTop; i++)
+            for (int i = PosTop; i < Height + PosTop; i++)
             {
-                for (int j = PosLeft; j < Width+PosLeft; j++)
+                for (int j = PosLeft; j < Width + PosLeft; j++)
                 {
                     char ToPrint = ' ';
 
-                    if ((i == 0 + PosTop) || (i == PosTop + Height-1))
+                    if ((i == 0 + PosTop) || (i == PosTop + Height - 1))
                     {
                         ToPrint = HorizontalChar;
-                    }else if((j == 0 + PosLeft) || (j==PosLeft + Width-1)){
+                    }
+                    else if ((j == 0 + PosLeft) || (j == PosLeft + Width - 1))
+                    {
                         ToPrint = VerticalChar;
-                    }else
+                    }
+                    else
                     {
                         ToPrint = EmptyChar;
                     }
-                    Console.SetCursorPosition(j,i);
+                    Console.SetCursorPosition(j, i);
                     Console.Write(ToPrint);
                 }
             }
@@ -245,14 +279,92 @@ namespace tui_netcore
         /// </summary>
         /// <param name="schema"></param>
         /// <returns>string containing the user answer</returns>
-        public string DrawInput(ColorSchema schema = ColorSchema.Regular){
+        public string DrawInput(ColorSchema schema = ColorSchema.Regular)
+        {
             Draw(schema);
             setColorSchema(schema);
-            Console.SetCursorPosition((PosLeft + MarginLeft),(PosTop + Height - MarginTop));
+            Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + Height - MarginTop));
             Console.Write($"{AnswerChar} ");
             string answer = Console.ReadLine();
             setColorSchema(ColorSchema.Regular);
             return answer;
+        }
+
+
+        /// <summary>
+        /// Prints message as book pages, based on window size.
+        /// Has three button options (next, previous, done) that are used to go forward, backward and exit scree
+        /// </summary>
+        /// <param name="schema">Color Schema</param>
+        /// <param name="txtNext">Text for Next option</param>
+        /// <param name="txtPrev">Text for Previous option</param>
+        /// <param name="txtDone">Text for Quit option</param>
+        /// <param name="defaultAnswer">0=Prev / 1=Next / 2=Done</param>
+        public void DrawBook(ColorSchema schema = ColorSchema.Regular, string txtNext = "next", string txtPrev = "previous", string txtDone = "Done", int defaultAnswer = 1)
+        {
+            setColorSchema(schema);
+            int answer = defaultAnswer;
+            int CursorPrev = PosLeft + MarginLeft;
+            int CursorDone = PosLeft + Width - (2 * MarginLeft);
+            int CursorNext = (PosLeft + Width) / 2;
+            int Line = (PosTop + Height - MarginTop);
+            int index = 0;
+            string oldTitle = Title;
+
+            List<string> pages = separatePages();
+            int totalPages = pages.Count();
+            Body = pages[0];
+
+            ConsoleKeyInfo keypress;
+            bool keepGoing = true;
+            while (keepGoing)
+            {
+                Title = oldTitle + $@" [ {index +1}/{totalPages} ]";
+                Draw(schema);
+                Console.SetCursorPosition(CursorPrev + 1, Line);
+                Console.Write(txtPrev);
+                Console.SetCursorPosition(CursorNext + 1, Line);
+                Console.Write(txtNext);
+                Console.SetCursorPosition(CursorDone + 1, Line);
+                Console.Write(txtDone);
+
+                Console.SetCursorPosition(CursorPrev, Line);
+                Console.Write(answer == 0 ? AnswerChar : EmptyChar);
+                Console.SetCursorPosition(CursorNext, Line);
+                Console.Write(answer == 1 ? AnswerChar : EmptyChar);
+                Console.SetCursorPosition(CursorDone, Line);
+                Console.Write(answer == 2 ? AnswerChar : EmptyChar);
+
+                keypress = Console.ReadKey(false);
+
+                switch (keypress.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        answer = answer - 1 >= 0 ? answer - 1 : 2;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        answer = answer + 1 <= 2 ? answer + 1 : 0;
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (answer)
+                        {
+                            case 0:
+                                index = index - 1 >= 0 ? index - 1 : pages.Count() - 1;
+                                break;
+                            case 1:
+                                index = index + 1 <= pages.Count() - 1 ? index + 1 : 0;
+                                break;
+                            case 2:
+                                keepGoing = false;
+                                break;
+
+                        }
+                        break;
+                }
+                Body = pages[index];
+
+            }
+            setColorSchema(ColorSchema.Regular);
         }
 
         /// <summary>
@@ -265,12 +377,13 @@ namespace tui_netcore
         /// <param name="txtNo">Text to No option</param>
         /// <param name="defaultAnswer">true=yes/false=no</param>
         /// <returns>true=yes/false=no</returns>
-        public bool DrawYesNo(ColorSchema schema = ColorSchema.Regular,string txtYes = "Yes", string txtNo = "No", bool defaultAnswer = false){
+        public bool DrawYesNo(ColorSchema schema = ColorSchema.Regular, string txtYes = "Yes", string txtNo = "No", bool defaultAnswer = false)
+        {
             Draw(schema);
             setColorSchema(schema);
             bool answer = defaultAnswer;
             int CursorYes = PosLeft + MarginLeft;
-            int CursorNo = PosLeft + Width - (2*MarginLeft) ;
+            int CursorNo = PosLeft + Width - (2 * MarginLeft);
             int Line = (PosTop + Height - MarginTop);
 
             ConsoleKeyInfo keypress;
@@ -282,7 +395,7 @@ namespace tui_netcore
                 Console.Write(txtNo);
 
                 Console.SetCursorPosition(CursorYes, Line);
-                Console.Write(answer?AnswerChar:EmptyChar);
+                Console.Write(answer ? AnswerChar : EmptyChar);
                 Console.SetCursorPosition(CursorNo, Line);
                 Console.Write(!answer ? AnswerChar : EmptyChar);
                 keypress = Console.ReadKey(false);
@@ -291,7 +404,7 @@ namespace tui_netcore
                 {
                     answer = !answer;
                 }
-                
+
             } while (keypress.Key != ConsoleKey.Enter);
             setColorSchema(ColorSchema.Regular);
             return answer;
@@ -303,7 +416,8 @@ namespace tui_netcore
         /// </summary>
         /// <param name="schema">Color schema</param>
         /// <param name="txtOk">Text to appear on the bottom of the box</param>
-        public void DrawOk(ColorSchema schema = ColorSchema.Regular,string txtOk = "Press any key to continue..."){
+        public void DrawOk(ColorSchema schema = ColorSchema.Regular, string txtOk = "Press any key to continue...")
+        {
             Draw(schema);
             setColorSchema(schema);
             int CursorOk = PosLeft + MarginLeft;
@@ -313,7 +427,8 @@ namespace tui_netcore
             Console.ReadKey();
         }
 
-        public List<CheckBoxOption> DrawCheckBox(List<CheckBoxOption> options, ColorSchema schema = ColorSchema.Regular, bool onlyChecked = true){
+        public List<CheckBoxOption> DrawCheckBox(List<CheckBoxOption> options, ColorSchema schema = ColorSchema.Regular, bool onlyChecked = true)
+        {
             Draw(schema);
             setColorSchema(schema);
             int Line = LastBodyHeight + MarginTop;
@@ -333,7 +448,7 @@ namespace tui_netcore
             ConsoleKeyInfo keypress;
             do
             {
-                
+
                 Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                 Console.Write(AnswerChar);
                 keypress = Console.ReadKey(true);
@@ -348,7 +463,7 @@ namespace tui_netcore
                 }
                 if (keypress.Key == ConsoleKey.DownArrow)
                 {
-                    if (tmpCursor < TmpOptions.Count-1)
+                    if (tmpCursor < TmpOptions.Count - 1)
                     {
                         Console.SetCursorPosition(MarginLeft + PosLeft, Line + tmpCursor);
                         Console.Write(EmptyChar);
@@ -359,7 +474,7 @@ namespace tui_netcore
                 {
                     CheckBoxOption c = TmpOptions[tmpCursor];
                     c.IsSelected = !c.IsSelected;
-                    char ch = c.IsSelected?SelectedChar:EmptyChar;
+                    char ch = c.IsSelected ? SelectedChar : EmptyChar;
                     Console.SetCursorPosition(MarginLeft + 2 + PosLeft, Line + tmpCursor);
                     TmpOptions[tmpCursor] = c;
                     Console.Write(ch);

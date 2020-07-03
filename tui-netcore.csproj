@@ -8,11 +8,11 @@
     <!-- <OutputType>Exe</OutputType> -->
   <!--  -->
 
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp2.0</TargetFrameworks>
     <Title>Simple TUI</Title>
     <Description>Simple Text Interface for .net Core</Description>
     <PackageId>fc.tui-core</PackageId>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <Authors>Fernando Crozetta</Authors>
     <Company>czetta</Company>
     <PackageLicenseUrl>https://github.com/fcrozetta/tui-netcore/blob/master/LICENSE</PackageLicenseUrl>
