@@ -16,6 +16,7 @@ It's is possible to use, but bugs are still happening.
 - [But why?](#but-why)
 - [Instalation](#instalation)
 - [Usage](#usage)
+  - [Creating a Hello World](#creating-a-hello-world)
   - [Instantiating the box object](#instantiating-the-box-object)
   - [Drawing a Simple Box](#drawing-a-simple-box)
   - [Drawing a box, without waiting response from user](#drawing-a-box-without-waiting-response-from-user)
@@ -34,7 +35,7 @@ I've used other TUI programs in python, bash and node, but personally i didn't e
 - User Input box (User can type the answer and press <kbd>enter</kbd> to confirm)
 - Yes/No box (User can select with Arrow keys, and <kbd>enter</kbd> to confirm)
 - Check Box (User can select multiple elements with arrow keys and <kbd>spacebar</kbd>, and <kbd>enter</kbd> to confirm)
-- List Box (User can choose one option in the list, and press <kbd>enter</kbd> to select the option) 
+- List Box (User can choose one option in the list, and press <kbd>enter</kbd> to select the option)
 
 
 
@@ -45,7 +46,7 @@ I've used other TUI programs in python, bash and node, but personally i didn't e
 If you have your own project and want to use this interface, you just have to install the package. The easiest way to do it is:
 1. open a terminal and go to your project folder
 2. Execute command:
-    `dotnet add package fc.tui-netcore`
+    `dotnet add package fc.tui-core`
 3. Execute the command:
     `dotnet restore`
 
@@ -54,13 +55,34 @@ If you have your own project and want to use this interface, you just have to in
 # Usage
 To use the class, it's possible to initialize only one time use the same windows multiple times. In this section we will initialize once and use it for every example.
 
+## Creating a Hello World
+
+[![asciicast](https://asciinema.org/a/17lWkjuCQQipZzP6E7WnQ3C9w.svg)](https://asciinema.org/a/17lWkjuCQQipZzP6E7WnQ3C9w)
+
+The easiest way to start is creating a window that uses all the available space in your terminal.
+
+In your project, add the import
+```csharp
+using tui_netcore;
+```
+
+and inside your program, create a new window:
+
+```csharp
+Tui window = new Tui()
+window.Title = " Hello World ";
+window.Body = "This is a dullscreen window";
+window.DrawOk();
+```
+
+and run it with ```dotnet run``` or the method you prefer.
 ## Instantiating the box object
 
 ```csharp
 using tui_netcore;
 
 /* Inside your main */
-Tui t= new Tui(100,25);
+Tui t= new Tui();
 ```
 
 If you want to use directly, you can also use the following code:
@@ -69,31 +91,19 @@ using tui_netcore;
 
 /* Inside your main */
 Tui.ColorSchema schema =Tui.ColorSchema.Info; // This is used to change the color of the box
-Tui t = new Tui(100,25){
+Tui t = new Tui(){
     Title = "Title message",
     Body = "Body message"
 };
 ```
 
-To create a fullscreen box (a box that cover the entire console size), you can use an empty constructor, like the example below:
-
-```csharp
-using tui_netcore;
-
-/* Inside your main */
-Tui.ColorSchema schema =Tui.ColorSchema.Info; // This is used to change the color of the box
-Tui t = new Tui(){
-    Title = "fullscreen box!",
-    Body = "It's easy to create!"
-};
-```
-
-
 ## Drawing a Simple Box
+![drawOk](imgs/drawok.png)
+
 ```csharp
 t.DrawOk();
 ```
-Yes. It's simple like that. 
+Yes. It's simple like that.
 
 DrawOk() Method will accept any key to continue.
 
@@ -106,17 +116,24 @@ DrawOk() Method will accept any key to continue.
 This will create a box, and continue the program. Use this as a part of something more complex.
 
 ## Drawing an Input Box
+![drawInput](imgs/drawinput.png)
+
 ```csharp
 string answer = t.DrawInput();
 ```
-The return type of the DrawInput Method will always be a string. 
+
+The return type of the DrawInput Method will always be a string.
 Note that the Property AnserChar will be printed where the User have to type
 
 ## Drawing a Yes/No Box
+![drawYesNo](imgs/drawyesno.png)
+
 ```csharp
 bool answer = t.DrawYesNo();
 ```
-The Yes/no box returns a bool, where "yes" is true
+
+The Yes/no box returns a bool, where "yes" is true.
+
 
 You can customise the "yes" and "no" words, like this:
 ```csharp
@@ -133,11 +150,16 @@ The signature of the method is:
 ```csharp
 public List<CheckBoxOption> DrawCheckBox(List<CheckBoxOption> options, ColorSchema schema = ColorSchema.Regular, bool onlyChecked = true)
 ```
-The first parameter is a list of checkboxOption objects, followed by a ColoSchema, and a boolean as last parameter.<br> You can check the CheckBox class on TUI.cs file.<br>The schema is also set on TUI.cs file, and is used to change the colors of the boxes.<br> The last parameter is used to return only the options selected by the user(true), or the entire list, with checked and unchecked values.
+The first parameter is a list of checkboxOption objects, followed by a ColoSchema, and a boolean as last parameter.
+You can check the CheckBox class on TUI.cs file.
+The schema is also set on TUI.cs file, and is used to change the colors of the boxes.
+The last parameter is used to return only the options selected by the user(true), or the entire list, with checked and unchecked values.
 
 >Note that the return type is a list of CheckBoxOption
 
 ## Draw a list box
+![drawList](imgs/drawlist.png)
+
 This type of box will render a List of otions where the user can select only one option. This box can be used as simple selction and menu.
 
 >For now there is no description. If you want to show the description, you have to format manually the strings.
@@ -149,6 +171,8 @@ string ListBox = t.DrawList(new List<string>() {
         });
 ```
 ## Draw a Book box
+![drawBook](imgs/drawBook.png)
+
 This type of box will render a "book" splitting the text into pages.
 
 The page number will be at the title bar, after the title
