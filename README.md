@@ -18,7 +18,7 @@ It's is possible to use, but bugs are still happening.
 - [Usage](#usage)
   - [Creating a Hello World](#creating-a-hello-world)
   - [Instantiating the box object](#instantiating-the-box-object)
-  - [Drawing a Simple Box](#drawing-a-simple-box)
+  - [OK Box](#ok-box)
   - [Drawing a box, without waiting response from user](#drawing-a-box-without-waiting-response-from-user)
   - [Drawing an Input Box](#drawing-an-input-box)
   - [Drawing a Yes/No Box](#drawing-a-yesno-box)
@@ -97,7 +97,8 @@ Tui t = new Tui(){
 };
 ```
 
-## Drawing a Simple Box
+## OK Box
+[![asciicast](https://asciinema.org/a/8WJOqavQPpuETXsXId7x1IB4W.svg)](https://asciinema.org/a/8WJOqavQPpuETXsXId7x1IB4W)
 ![drawOk](imgs/drawok.png)
 
 ```csharp
@@ -116,6 +117,7 @@ DrawOk() Method will accept any key to continue.
 This will create a box, and continue the program. Use this as a part of something more complex.
 
 ## Drawing an Input Box
+[![asciicast](https://asciinema.org/a/g06DMoppoG9qWx35S4MQJzKjK.svg)](https://asciinema.org/a/g06DMoppoG9qWx35S4MQJzKjK)
 ![drawInput](imgs/drawinput.png)
 
 ```csharp
@@ -126,6 +128,7 @@ The return type of the DrawInput Method will always be a string.
 Note that the Property AnserChar will be printed where the User have to type
 
 ## Drawing a Yes/No Box
+[![asciicast](https://asciinema.org/a/fNEs31rKunKkAPHoTAjKV9brc.svg)](https://asciinema.org/a/fNEs31rKunKkAPHoTAjKV9brc)
 ![drawYesNo](imgs/drawyesno.png)
 
 ```csharp
@@ -158,6 +161,7 @@ The last parameter is used to return only the options selected by the user(true)
 >Note that the return type is a list of CheckBoxOption
 
 ## Draw a list box
+[![asciicast](https://asciinema.org/a/z3qETOmPLjxLabSp1hALvREbo.svg)](https://asciinema.org/a/z3qETOmPLjxLabSp1hALvREbo)
 ![drawList](imgs/drawlist.png)
 
 This type of box will render a List of otions where the user can select only one option. This box can be used as simple selction and menu.
@@ -171,6 +175,7 @@ string ListBox = t.DrawList(new List<string>() {
         });
 ```
 ## Draw a Book box
+[![asciicast](https://asciinema.org/a/uaBmZK6X3nS8tovaTUbDCrHi3.svg)](https://asciinema.org/a/uaBmZK6X3nS8tovaTUbDCrHi3)
 ![drawBook](imgs/drawBook.png)
 
 This type of box will render a "book" splitting the text into pages.
