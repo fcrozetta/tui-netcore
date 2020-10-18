@@ -148,6 +148,7 @@ You can also set the default option, adding an argument at the end of the method
 bool answer = t.DrawYesNo(schema,txtYes="YAH",txtNo="NAH",defaultAnswer=true);
 ```
 ## Draw a check Box
+[![asciicast](https://asciinema.org/a/CXProc6Etf4UuPR6s7aQKnutp.svg)](https://asciinema.org/a/CXProc6Etf4UuPR6s7aQKnutp)
 This type of box will allow the user to select multiple options with spacebar, and continue with Enter
 The signature of the method is:
 ```csharp
