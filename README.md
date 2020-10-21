@@ -128,8 +128,7 @@ The return type of the DrawInput Method will always be a string.
 Note that the Property AnserChar will be printed where the User have to type
 
 ## Drawing a Yes/No Box
-[![asciicast](https://asciinema.org/a/fNEs31rKunKkAPHoTAjKV9brc.svg)](https://asciinema.org/a/fNEs31rKunKkAPHoTAjKV9brc)
-![drawYesNo](imgs/drawyesno.png)
+![drawYesNo](imgs/screen-tui-netcore-yes-no.gif)
 
 ```csharp
 bool answer = t.DrawYesNo();
