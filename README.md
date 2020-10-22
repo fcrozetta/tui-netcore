@@ -57,7 +57,7 @@ To use the class, it's possible to initialize only one time use the same windows
 
 ## Creating a Hello World
 
-[![asciicast](imgs/screen-tui-netcore-hello-world.gif)](https://asciinema.org/a/17lWkjuCQQipZzP6E7WnQ3C9w)
+![asciicast](imgs/screen-tui-netcore-hello-world.gif)
 
 The easiest way to start is creating a window that uses all the available space in your terminal.
 
