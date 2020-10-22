@@ -117,8 +117,7 @@ DrawOk() Method will accept any key to continue.
 This will create a box, and continue the program. Use this as a part of something more complex.
 
 ## Drawing an Input Box
-[![asciicast](https://asciinema.org/a/g06DMoppoG9qWx35S4MQJzKjK.svg)](https://asciinema.org/a/g06DMoppoG9qWx35S4MQJzKjK)
-![drawInput](imgs/drawinput.png)
+![drawInput](imgs/screen-tui-netcore-draw-input.gif)
 
 ```csharp
 string answer = t.DrawInput();
