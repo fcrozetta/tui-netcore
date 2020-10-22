@@ -98,8 +98,7 @@ Tui t = new Tui(){
 ```
 
 ## OK Box
-[![asciicast](https://asciinema.org/a/8WJOqavQPpuETXsXId7x1IB4W.svg)](https://asciinema.org/a/8WJOqavQPpuETXsXId7x1IB4W)
-![drawOk](imgs/drawok.png)
+![drawOk](imgs/screen-tui-netcore-draw-ok-box.gif)
 
 ```csharp
 t.DrawOk();
