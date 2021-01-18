@@ -82,27 +82,8 @@ namespace tui_netcore
             LastBodyHeight = 0;
         }
 
-        public Tui()
+        public Tui() : this(Console.WindowWidth, Console.WindowHeight, 0, 0)
         {
-            Width = Console.WindowWidth;
-            Height = Console.WindowHeight;
-            PosTop = 0;
-            PosLeft = 0;
-            AnswerChar = '>';
-            SelectedChar = '*';
-            HorizontalChar = '-';
-            VerticalChar = '|';
-            TopLeftChar = '+';
-            TopRightChar = '+';
-            BottomLeftChar = '+';
-            BottomRightChar = '+';
-            IntersectionChar = '+';
-            EmptyChar = ' ';
-            Title = null;
-            Body = null;
-            MarginLeft = 4;
-            MarginTop = 2;
-            LastBodyHeight = 0;
         }
 
         /// <summary>
