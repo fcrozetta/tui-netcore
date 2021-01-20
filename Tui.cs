@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
+#nullable enable
+
 namespace tui_netcore
 {
     public class Tui
@@ -23,7 +25,12 @@ namespace tui_netcore
         public char AnswerChar { get; set; }
         public char SelectedChar { get; set; }
 
-
+        public char HorizontalChar { get; set; }
+        public char VerticalChar { get; set; }
+        public char TopLeftChar { get; set; }
+        public char TopRightChar { get; set; }
+        public char BottomLeftChar { get; set; }
+        public char BottomRightChar { get; set; }
         public char IntersectionChar { get; set; }
         public char EmptyChar { get; set; }
         public int MarginLeft { get; set; }
@@ -43,7 +50,6 @@ namespace tui_netcore
             System
 
         }
-
 
         /// <summary>
         /// This is the object used for each option in the checkbox and/or radio options
@@ -103,8 +109,8 @@ namespace tui_netcore
             IntersectionChar = '+';
 
             EmptyChar = ' ';
-            Title = null;
-            Body = null;
+            Title = String.Empty;
+            Body = String.Empty;
             MarginLeft = 4;
             MarginTop = 2;
             LastBodyHeight = 0;
@@ -170,7 +176,6 @@ namespace tui_netcore
             Console.Write(Title);
         }
 
-
         /// <summary>
         /// Roughly break body text in pages, considering no line breaks.
         /// If there are line breaks, the window will not be complete.
@@ -181,16 +186,21 @@ namespace tui_netcore
         {
             var pages = new List<string>();
             int index = -1;
-            int totalSpace = (Width - (2 * MarginLeft)) * (Height - (2*MarginTop) -2); 
+            int totalSpace = (Width - (2 * MarginLeft)) * (Height - (2 * MarginTop) - 2);
 
             foreach (var c in Body)
             {
-                if (index == -1){
+                if (index == -1)
+                {
                     pages.Add(c.ToString());
-                    index ++;
-                }else if (pages.Last().ToString().Count()-1 < totalSpace){
-                    pages[index]+=c.ToString();
-                }else{
+                    index++;
+                }
+                else if (pages.Last().ToString().Count() - 1 < totalSpace)
+                {
+                    pages[index] += c.ToString();
+                }
+                else
+                {
                     pages.Add(c.ToString());
                     index++;
                 }
@@ -198,6 +208,7 @@ namespace tui_netcore
 
             return pages;
         }
+
         private void drawBody()
         {
             int usableSpace = Width - (2 * MarginLeft);
@@ -246,7 +257,6 @@ namespace tui_netcore
             System.Console.Write(BorderStyle.BottomRightChar);
         }
 
-
         /// <summary>
         /// This Frame wraps the entire screen, printing spaces inside.
         /// </summary>
@@ -277,8 +287,8 @@ namespace tui_netcore
                 }
             }
             DrawCorners();
-            if (Title != null) drawTitle();
-            if (Body != null) drawBody();
+            if (!String.IsNullOrEmpty(Title)) drawTitle();
+            if (!String.IsNullOrEmpty(Body)) drawBody();
 
             setColorSchema(ColorSchema.Regular);
         }
@@ -288,17 +298,16 @@ namespace tui_netcore
         /// </summary>
         /// <param name="schema"></param>
         /// <returns>string containing the user answer</returns>
-        public string DrawInput(ColorSchema schema = ColorSchema.Regular)
+        public string? DrawInput(ColorSchema schema = ColorSchema.Regular)
         {
             Draw(schema);
             setColorSchema(schema);
             Console.SetCursorPosition((PosLeft + MarginLeft), (PosTop + Height - MarginTop));
             Console.Write($"{AnswerChar} ");
-            string answer = Console.ReadLine();
+            string? answer = Console.ReadLine();
             setColorSchema(ColorSchema.Regular);
             return answer;
         }
-
 
         /// <summary>
         /// Prints message as book pages, based on window size.
@@ -328,7 +337,7 @@ namespace tui_netcore
             bool keepGoing = true;
             while (keepGoing)
             {
-                Title = oldTitle + $@" [ {index +1}/{totalPages} ]";
+                Title = oldTitle + $@" [ {index + 1}/{totalPages} ]";
                 Draw(schema);
                 Console.SetCursorPosition(CursorPrev + 1, Line);
                 Console.Write(txtPrev);
@@ -371,8 +380,8 @@ namespace tui_netcore
                         break;
                 }
                 Body = pages[index];
-
             }
+
             setColorSchema(ColorSchema.Regular);
         }
 
@@ -417,7 +426,6 @@ namespace tui_netcore
             } while (keypress.Key != ConsoleKey.Enter);
             setColorSchema(ColorSchema.Regular);
             return answer;
-
         }
 
         /// <summary>
@@ -499,7 +507,6 @@ namespace tui_netcore
 
             setColorSchema(ColorSchema.Regular);
             return TmpOptions;
-
         }
 
         public string DrawList(List<String> options, ColorSchema schema = ColorSchema.Regular)
@@ -547,7 +554,5 @@ namespace tui_netcore
             setColorSchema(ColorSchema.Regular);
             return options[tmpCursor];
         }
-
-
     }
 }
