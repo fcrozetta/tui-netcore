@@ -36,6 +36,8 @@ namespace tui_netcore
         public int MarginLeft { get; set; }
         public int MarginTop { get; set; }
 
+        public BorderStyleBrush BorderStyle { get; set; } = BorderStyles.Text;
+
         // * This is used to draw multiple lines below the body (checkbox/radio)
         public int LastBodyHeight { get; set; }
 
@@ -59,6 +61,43 @@ namespace tui_netcore
             public string Description { get; set; }
         }
 
+        public sealed class BorderStyleBrush
+        {
+            public char TopLeftChar { get; }
+            public char HorizontalChar { get; }
+            public char TopRightChar { get; }
+            public char VerticalChar { get; }
+            public char BottomLeftChar { get; }
+            public char BottomRightChar { get; }
+
+            public BorderStyleBrush(char topLeft, char horizontal, char topRight, char vertical, char bottomLeft, char bottomRight)
+            {
+                TopLeftChar = topLeft;
+                HorizontalChar = horizontal;
+                TopRightChar = topRight;
+                VerticalChar = vertical;
+                BottomLeftChar = bottomLeft;
+                BottomRightChar = bottomRight;
+            }
+
+            public void Deconstruct(out char topLeft, out char horizontal, out char topRight, out char vertical, out char bottomLeft, out char bottomRight)
+            {
+                topLeft = TopLeftChar;
+                horizontal = HorizontalChar;
+                topRight = TopRightChar;
+                vertical = VerticalChar;
+                bottomLeft = BottomLeftChar;
+                bottomRight = BottomRightChar;
+            }
+        }
+
+        public static class BorderStyles
+        {
+            public static readonly BorderStyleBrush Text = new BorderStyleBrush('+', '-', '+', '|', '+', '+');
+            public static readonly BorderStyleBrush SingleLine = new BorderStyleBrush('┌', '─', '┐', '│', '└', '┘');
+            public static readonly BorderStyleBrush DoubleLine = new BorderStyleBrush('╔', '═', '╗', '║', '╚', '╝');
+        }
+
         public Tui(int width = 100, int height = 80, int posLeft = 0, int posTop = 0)
         {
             Width = width;
@@ -67,13 +106,8 @@ namespace tui_netcore
             PosLeft = posLeft;
             AnswerChar = '>';
             SelectedChar = '*';
-            HorizontalChar = '-';
-            VerticalChar = '|';
-            TopLeftChar = '+';
-            TopRightChar = '+';
-            BottomLeftChar = '+';
-            BottomRightChar = '+';
             IntersectionChar = '+';
+
             EmptyChar = ' ';
             Title = String.Empty;
             Body = String.Empty;
@@ -82,27 +116,8 @@ namespace tui_netcore
             LastBodyHeight = 0;
         }
 
-        public Tui()
+        public Tui() : this(Console.WindowWidth, Console.WindowHeight, 0, 0)
         {
-            Width = Console.WindowWidth;
-            Height = Console.WindowHeight;
-            PosTop = 0;
-            PosLeft = 0;
-            AnswerChar = '>';
-            SelectedChar = '*';
-            HorizontalChar = '-';
-            VerticalChar = '|';
-            TopLeftChar = '+';
-            TopRightChar = '+';
-            BottomLeftChar = '+';
-            BottomRightChar = '+';
-            IntersectionChar = '+';
-            EmptyChar = ' ';
-            Title = String.Empty;
-            Body = String.Empty;
-            MarginLeft = 4;
-            MarginTop = 2;
-            LastBodyHeight = 0;
         }
 
         /// <summary>
@@ -230,16 +245,16 @@ namespace tui_netcore
         private void DrawCorners()
         {
             Console.SetCursorPosition(PosLeft, PosTop);
-            Console.Write(TopLeftChar);
+            Console.Write(BorderStyle.TopLeftChar);
 
             Console.SetCursorPosition(PosLeft + Width - 1, PosTop);
-            System.Console.Write(TopRightChar);
+            System.Console.Write(BorderStyle.TopRightChar);
 
             Console.SetCursorPosition(PosLeft, PosTop + Height - 1);
-            System.Console.Write(BottomLeftChar);
+            System.Console.Write(BorderStyle.BottomLeftChar);
 
             Console.SetCursorPosition(PosLeft + Width - 1, PosTop + Height - 1);
-            System.Console.Write(BottomRightChar);
+            System.Console.Write(BorderStyle.BottomRightChar);
         }
 
         /// <summary>
@@ -257,11 +272,11 @@ namespace tui_netcore
 
                     if ((i == 0 + PosTop) || (i == PosTop + Height - 1))
                     {
-                        ToPrint = HorizontalChar;
+                        ToPrint = BorderStyle.HorizontalChar;
                     }
                     else if ((j == 0 + PosLeft) || (j == PosLeft + Width - 1))
                     {
-                        ToPrint = VerticalChar;
+                        ToPrint = BorderStyle.VerticalChar;
                     }
                     else
                     {
