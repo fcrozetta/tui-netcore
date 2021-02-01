@@ -8,7 +8,7 @@
     <!-- <OutputType>Exe</OutputType> -->
   <!--  -->
 
-    <TargetFrameworks>netcoreapp3.0;netcoreapp2.0</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
     <Title>Simple TUI</Title>
     <Description>Simple Text Interface for .net Core</Description>
     <PackageId>fc.tui-core</PackageId>
