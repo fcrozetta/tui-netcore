@@ -264,28 +264,22 @@ namespace tui_netcore
         public void Draw(ColorSchema schema = ColorSchema.Regular)
         {
             setColorSchema(schema);
+
+            var headLine = new Char[Width];
+            var bodyLine = new Char[Width];
+
+            for (var i = 0; i < Width; ++i)
+            {
+                headLine[i] = i == 0 || i == Width - 1 ? BorderStyle.VerticalChar : BorderStyle.HorizontalChar;
+                bodyLine[i] = i == 0 || i == Width - 1 ? BorderStyle.VerticalChar : EmptyChar;
+            }
+
             for (int i = PosTop; i < Height + PosTop; i++)
             {
-                for (int j = PosLeft; j < Width + PosLeft; j++)
-                {
-                    char ToPrint = ' ';
-
-                    if ((i == 0 + PosTop) || (i == PosTop + Height - 1))
-                    {
-                        ToPrint = BorderStyle.HorizontalChar;
-                    }
-                    else if ((j == 0 + PosLeft) || (j == PosLeft + Width - 1))
-                    {
-                        ToPrint = BorderStyle.VerticalChar;
-                    }
-                    else
-                    {
-                        ToPrint = EmptyChar;
-                    }
-                    Console.SetCursorPosition(j, i);
-                    Console.Write(ToPrint);
-                }
+                Console.SetCursorPosition(PosLeft, i);
+                Console.Write(i == PosTop || i == Height + PosTop - 1 ? headLine : bodyLine);
             }
+
             DrawCorners();
             if (!String.IsNullOrEmpty(Title)) drawTitle();
             if (!String.IsNullOrEmpty(Body)) drawBody();
