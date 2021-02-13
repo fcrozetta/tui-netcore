@@ -114,7 +114,6 @@ namespace tui_netcore
             MarginLeft = 4;
             MarginTop = 2;
             LastBodyHeight = 0;
-            SetCursorVisibility(false);
         }
 
         public Tui() : this(Console.WindowWidth, Console.WindowHeight, 0, 0)

@@ -7,6 +7,7 @@ namespace tui_netcore
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
 
             // The empty Constructor build a fullscreen, based on Console size at instance time
             Tui fullscreen = new Tui();
