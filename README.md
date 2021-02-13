@@ -18,7 +18,7 @@ It's is possible to use, but bugs are still happening.
 - [Usage](#usage)
   - [Creating a Hello World](#creating-a-hello-world)
   - [Instantiating the box object](#instantiating-the-box-object)
-  - [Drawing a Simple Box](#drawing-a-simple-box)
+  - [OK Box](#ok-box)
   - [Drawing a box, without waiting response from user](#drawing-a-box-without-waiting-response-from-user)
   - [Drawing an Input Box](#drawing-an-input-box)
   - [Drawing a Yes/No Box](#drawing-a-yesno-box)
@@ -57,7 +57,7 @@ To use the class, it's possible to initialize only one time use the same windows
 
 ## Creating a Hello World
 
-[![asciicast](https://asciinema.org/a/17lWkjuCQQipZzP6E7WnQ3C9w.svg)](https://asciinema.org/a/17lWkjuCQQipZzP6E7WnQ3C9w)
+![asciicast](imgs/screen-tui-netcore-hello-world.gif)
 
 The easiest way to start is creating a window that uses all the available space in your terminal.
 
@@ -97,8 +97,8 @@ Tui t = new Tui(){
 };
 ```
 
-## Drawing a Simple Box
-![drawOk](imgs/drawok.png)
+## OK Box
+![drawOk](imgs/screen-tui-netcore-draw-ok-box.gif)
 
 ```csharp
 t.DrawOk();
@@ -116,7 +116,7 @@ DrawOk() Method will accept any key to continue.
 This will create a box, and continue the program. Use this as a part of something more complex.
 
 ## Drawing an Input Box
-![drawInput](imgs/drawinput.png)
+![drawInput](imgs/screen-tui-netcore-draw-input.gif)
 
 ```csharp
 string answer = t.DrawInput();
@@ -126,7 +126,7 @@ The return type of the DrawInput Method will always be a string.
 Note that the Property AnserChar will be printed where the User have to type
 
 ## Drawing a Yes/No Box
-![drawYesNo](imgs/drawyesno.png)
+![drawYesNo](imgs/screen-tui-netcore-yes-no.gif)
 
 ```csharp
 bool answer = t.DrawYesNo();
@@ -145,6 +145,7 @@ You can also set the default option, adding an argument at the end of the method
 bool answer = t.DrawYesNo(schema,txtYes="YAH",txtNo="NAH",defaultAnswer=true);
 ```
 ## Draw a check Box
+[![asciicast](https://asciinema.org/a/CXProc6Etf4UuPR6s7aQKnutp.svg)](https://asciinema.org/a/CXProc6Etf4UuPR6s7aQKnutp)
 This type of box will allow the user to select multiple options with spacebar, and continue with Enter
 The signature of the method is:
 ```csharp
@@ -158,6 +159,7 @@ The last parameter is used to return only the options selected by the user(true)
 >Note that the return type is a list of CheckBoxOption
 
 ## Draw a list box
+[![asciicast](https://asciinema.org/a/z3qETOmPLjxLabSp1hALvREbo.svg)](https://asciinema.org/a/z3qETOmPLjxLabSp1hALvREbo)
 ![drawList](imgs/drawlist.png)
 
 This type of box will render a List of otions where the user can select only one option. This box can be used as simple selction and menu.
@@ -171,6 +173,7 @@ string ListBox = t.DrawList(new List<string>() {
         });
 ```
 ## Draw a Book box
+[![asciicast](https://asciinema.org/a/uaBmZK6X3nS8tovaTUbDCrHi3.svg)](https://asciinema.org/a/uaBmZK6X3nS8tovaTUbDCrHi3)
 ![drawBook](imgs/drawBook.png)
 
 This type of box will render a "book" splitting the text into pages.

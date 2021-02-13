@@ -21,7 +21,7 @@ namespace tui_netcore
         public string Title { get; set; }
         public string Body { get; set; }
 
-        //Character Used to navigate, answer strings and select an option 
+        //Character Used to navigate, answer strings and select an option
         public char AnswerChar { get; set; }
         public char SelectedChar { get; set; }
 
@@ -114,6 +114,7 @@ namespace tui_netcore
             MarginLeft = 4;
             MarginTop = 2;
             LastBodyHeight = 0;
+            SetCursorVisibility(false);
         }
 
         public Tui() : this(Console.WindowWidth, Console.WindowHeight, 0, 0)

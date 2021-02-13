@@ -8,9 +8,6 @@ namespace tui_netcore
         static void Main(string[] args)
         {
 
-            // ? This is set outside the class for now. this may be set inside the class, in another commit
-            Console.CursorVisible = false;
-
             // The empty Constructor build a fullscreen, based on Console size at instance time
             Tui fullscreen = new Tui();
             fullscreen.DrawYesNo();
