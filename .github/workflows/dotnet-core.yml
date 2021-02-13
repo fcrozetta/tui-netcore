@@ -3,45 +3,48 @@ name: Build and Release
 on:
   push:
     tags:
-    - 'v*'
+      - "v*"
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet pack --configuration Release 
-    - name: Build project # This would actually build your project, using zip for an example artifact
-      run: zip --junk-paths tui-netcore bin/Release/*pkg
-    - name: Create a Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet pack --configuration Release
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: zip --junk-paths tui-netcore bin/Release/*pkg
+      - name: Create a Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
+        with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-    - name: Upload Release Asset
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./tui-netcore.zip
-        asset_name: tui-netcore.zip
-        asset_content_type: application/zip  
-    - name: nuget upload
-      env:
-       API_KEY: ${{secrets.NUGET_API_KEY}}
-      run: dotnet nuget push  bin/Release/*.nupkg -k $API_KEY -s "https://api.nuget.org/v3/index.json"
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./tui-netcore.zip
+          asset_name: tui-netcore.zip
+          asset_content_type: application/zip
+      - name: nuget upload
+        env:
+          API_KEY: ${{secrets.NUGET_API_KEY}}
+        run: dotnet nuget push  bin/Release/*.nupkg -k $API_KEY -s "https://api.nuget.org/v3/index.json"
+      - name: Symbol nuget upload
+        env:
+          API_KEY: ${{secrets.NUGET_API_KEY}}
+        run: dotnet nuget push  bin/Release/*.snupkg -k $API_KEY -s "https://api.nuget.org/v3/index.json"
