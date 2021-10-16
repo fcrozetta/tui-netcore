@@ -1,4 +1,3 @@
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L3L01VSK2)
 
 ![.NET Core](https://github.com/fcrozetta/tui-netcore/workflows/.NET%20Core/badge.svg)
 # tui-netcore
