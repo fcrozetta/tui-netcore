@@ -1,3 +1,6 @@
+> **THIS REPO IS UNMAINTAINED**: This project was created while I worked with c#, but now I am focusing on other languages and technologies so this library won't have any more updates.
+>
+
 
 ![.NET Core](https://github.com/fcrozetta/tui-netcore/workflows/.NET%20Core/badge.svg)
 # tui-netcore
